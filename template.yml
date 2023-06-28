@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Sample SAM Template for
+
+Parameters:
+  Name:
+    Description: Name of App
+    Type: String
+    Default: hello-world
+  EnvironmentType:
+    Description: Name of Environment Type. Example - prod, test
+    Type: String
+    Default: test
+  Owner:
+    Description: An owner's login or team
+    Type: String
+    AllowedPattern: ".+"
+    Default: Platform
+Resources:   # Add Resource here

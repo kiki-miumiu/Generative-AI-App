@@ -1,0 +1,60 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.9
+default_stages: [commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: trailing-whitespace
+        types: [text]
+      - id: end-of-file-fixer
+        types: [text]
+      - id: check-added-large-files
+      - id: fix-byte-order-marker
+        types: [text]
+      - id: detect-aws-credentials
+      - id: detect-private-key
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        types_or: [python, pyi]
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        types_or: [python, pyi]
+        additional_dependencies: # https://github.com/DmytroLitvinov/awesome-flake8-extensions
+          - flake8-bugbear
+          - flake8-builtins
+          - flake8-eradicate
+          - flake8-print
+          - flake8-variables-names
+          - pep8-naming
+          - flake8-docstrings
+          - flake8-markdown
+  - repo: https://github.com/awslabs/cfn-python-lint
+    rev: v0.52.0
+    hooks:
+      - id: cfn-python-lint
+        files: cloudformation/.*\.(json|yml|yaml)$
+  - repo: https://github.com/AleksaC/mirrors-cfn-nag
+    rev: v0.7.14
+    hooks:
+      - id: cfn-nag
+        files: cloudformation/.*\.(json|yml|yaml)$
+        # args:
+        #   - --blacklist-path=.cfn-nag-blacklist.yml # This does not work in pre-commit at this moment.
+        #   - --input-path
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        # verbose: true
+        entry: pipenv run tests
