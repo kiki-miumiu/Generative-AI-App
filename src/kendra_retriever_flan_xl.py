@@ -68,7 +68,7 @@ def run_chain(chain, prompt: str, history=[]):
 
 if __name__ == "__main__":
     chain = build_chain()
-    result = run_chain(chain, "What's SageMaker?")
+    result = run_chain(chain, "What's Amazon Lex?")
     print(result['answer'])
     if 'source_documents' in result:
         print('Sources:')
