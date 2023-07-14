@@ -19,14 +19,14 @@ pip install -r src/requirements.txt
 ```bash
 export AWS_REGION="<YOUR-AWS-REGION>"
 export KENDRA_INDEX_ID="<YOUR-KENDRA-INDEX-ID>"
-export FLAN_XXL_ENDPOINT="<YOUR-SAGEMAKER-ENDPOINT-FOR-FLAN-T-XXL>"
+export FLAN_XL_ENDPOINT="<YOUR-SAGEMAKER-ENDPOINT-FOR-FLAN-T-XL>"
 #export OPENAI_API_KEY="<YOUR-OPEN-AI-API-KEY>"
-streamlit run src/app.py flanxxl
+streamlit run src/app.py flanxl
 ```
 
 #### Run sample from the command line[optinal]
 ```bash
-python src/kendra_retriever_flan_xxl.py
+python src/kendra_retriever_flan_xl.py
 ```
 
 # Reference

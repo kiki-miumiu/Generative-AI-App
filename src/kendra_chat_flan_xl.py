@@ -1,41 +1,41 @@
 from langchain.retrievers import AmazonKendraRetriever
 from langchain.chains import ConversationalRetrievalChain
+from langchain.prompts import PromptTemplate
 from langchain import SagemakerEndpoint
 from langchain.llms.sagemaker_endpoint import LLMContentHandler
-from langchain.prompts import PromptTemplate
 import sys
 import json
 import os
 
 class bcolors:
-  HEADER = '\033[95m'
-  OKBLUE = '\033[94m'
-  OKCYAN = '\033[96m'
-  OKGREEN = '\033[92m'
-  WARNING = '\033[93m'
-  FAIL = '\033[91m'
-  ENDC = '\033[0m'
-  BOLD = '\033[1m'
-  UNDERLINE = '\033[4m'
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 MAX_HISTORY_LENGTH = 5
 
 def build_chain():
   region = os.environ["AWS_REGION"]
   kendra_index_id = os.environ["KENDRA_INDEX_ID"]
-  endpoint_name = os.environ["FLAN_XXL_ENDPOINT"]
+  endpoint_name = os.environ["FLAN_XL_ENDPOINT"]
 
   class ContentHandler(LLMContentHandler):
       content_type = "application/json"
       accepts = "application/json"
 
       def transform_input(self, prompt: str, model_kwargs: dict) -> bytes:
-          input_str = json.dumps({"inputs": prompt, "parameters": model_kwargs})
+          input_str = json.dumps({"text_inputs": prompt, **model_kwargs})
           return input_str.encode('utf-8')
       
       def transform_output(self, output: bytes) -> str:
           response_json = json.loads(output.read().decode("utf-8"))
-          return response_json[0]["generated_text"]
+          return response_json["generated_texts"][0]
 
   content_handler = ContentHandler()
 
@@ -80,7 +80,7 @@ def build_chain():
   return qa
 
 def run_chain(chain, prompt: str, history=[]):
-  return chain({"question": prompt, "chat_history": history})
+   return chain({"question": prompt, "chat_history": history})
 
 if __name__ == "__main__":
   chat_history = []
